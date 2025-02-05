@@ -1,5 +1,4 @@
 import string
-import pprint
 from WordProcessor import count_words_in_file
 from WordProcessor import return_words_in_file
 
@@ -7,7 +6,7 @@ from WordProcessor import return_words_in_file
 # Specify the path to your .txt file
 filename = "words.txt"
 
-def printNumberOfWords():
+def print_number_of_words():
     # Call the function and print the result
     word_count = count_words_in_file(filename)
     print(f"Number of words in '{filename}': {word_count}")
@@ -27,7 +26,7 @@ slot4 = alphabet_prob.copy()
 letter_occurences = [slot0, slot1, slot2, slot3, slot4]
 wordCount = 0
 
-def initOccurencesForSlots():
+def init_occurences_for_slots():
     global wordCount
     words = return_words_in_file(filename)
     for word in words:
@@ -53,7 +52,7 @@ def printProbabilitiesForSlots():
 
 
 def main():
-    initOccurencesForSlots()
+    init_occurences_for_slots()
     printProbabilitiesForSlots()
 
 #main()

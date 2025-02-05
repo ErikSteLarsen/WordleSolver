@@ -1,0 +1,5 @@
+{
+    "python.analysis.autoImportCompletions": false,
+    "python.analysis.autoFormatStrings": true,
+    "python.analysis.aiCodeActions": {}
+}
