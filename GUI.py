@@ -1,16 +1,14 @@
 import tkinter as tk
 import WordProcessor
-import WordleLogic
+import WordleGame
 
 class WordleSolver:
 
-    def __init__(self, root):
+    def __init__(self, root, game):
         self.root = root
         self.root.title("Wordle Solver")
         self.root.resizable(False, False)
-        self.current_row = 0
-        self.all_words = WordProcessor.return_words_in_file("words.txt")
-        self.remaining_words = self.all_words
+        self.game = game
         self.create_widgets()
 
     def create_widgets(self):
@@ -30,13 +28,13 @@ class WordleSolver:
             guess = self.entry.get().lower()
             for i, letter in enumerate(guess):
                 if letter == target_word[i]:
-                    self.labels[self.current_row][i].config(text=letter.upper(), bg="green", fg="white")
+                    self.labels[self.game.current_row][i].config(text=letter.upper(), bg="green", fg="white")
                 elif letter in target_word:
-                    self.labels[self.current_row][i].config(text=letter.upper(), bg="yellow", fg="black")
+                    self.labels[self.game.current_row][i].config(text=letter.upper(), bg="yellow", fg="black")
                 else:
-                    self.labels[self.current_row][i].config(text=letter.upper(), bg="gray", fg="white")
+                    self.labels[self.game.current_row][i].config(text=letter.upper(), bg="gray", fg="white")
 
-            self.current_row += 1  # Move to the next row
+            self.game.current_row += 1  # Move to the next row
             self.entry.delete(0, tk.END)  # Clear the entry field
     
 
@@ -44,15 +42,24 @@ class WordleSolver:
         if (len(self.entry.get().lower()) == 5):
             word = self.entry.get().lower()
             for i, letter in enumerate(word):
-                self.labels[self.current_row][i].config(text=letter.upper(), bg="white", fg="black")
+                if letter in self.game.excluded_letters:
+                    self.labels[self.game.current_row][i].config(text=letter.upper(), bg="gray", fg="black")
+                elif letter in self.game.included_letters:
+                    if (letter == self.game.solution_word[i]):
+                        self.labels[self.game.current_row][i].config(text=letter.upper(), bg="green", fg="black")
+                    else: 
+                        self.labels[self.game.current_row][i].config(text=letter.upper(), bg="yellow", fg="black")
+                else:
+                    self.labels[self.game.current_row][i].config(text=letter.upper(), bg="white", fg="black")
 
-            self.current_row += 1
+
+            self.game.current_row += 1
             self.entry.delete(0, tk.END)
 
     def on_label_click(self, event):
         label = event.widget
         row, col = label.grid_info()["row"], label.grid_info()["column"]
-        if (row-1 == self.current_row):
+        if (row-1 == self.game.current_row):
             print(f"Label clicked: {label.cget('text').lower()} at row {row-2}, column {col}")
             self.open_color_modal(label)
 
@@ -79,10 +86,16 @@ class WordleSolver:
         def set_color(color, prev_color):
             col = label.grid_info()["column"]
             char = label.cget('text').lower()
-            self.remaining_words = WordleLogic.test()
+            self.game.calculate_remaining_words(color, prev_color, char, col)
             
-            print(f"Remaining words: {self.remaining_words}")
-            label.config(bg=color)
+            if (color == "gray"):
+                for i in range(5):
+                    print(self.labels[self.game.current_row+2][i].cget('text').lower(), char) # PRØV DEG FRAM HER.....
+                    if self.labels[self.game.current_row][i].cget('text').lower() == char:
+                        self.labels[self.game.current_row][i].config(bg=color)
+            else:
+                label.config(bg=color)
+            #print(f"Remaining words: {self.game.remaining_words}")
             modal.destroy()
 
         green_button = tk.Button(modal, bg="green", text="Green", command=lambda: set_color("green", label.cget("bg")))
@@ -98,5 +111,7 @@ class WordleSolver:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = WordleSolver(root)
+    available_words = WordProcessor.return_words_in_file("words.txt")
+    game = WordleGame.WordleGameInstance(available_words)
+    app = WordleSolver(root, game)
     root.mainloop()
