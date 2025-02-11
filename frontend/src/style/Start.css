@@ -1,0 +1,7 @@
+
+.startPage {
+  background-color: #f5f5f5; /* Soft white/gray color */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
