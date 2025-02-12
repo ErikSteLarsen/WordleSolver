@@ -32,10 +32,23 @@ const LetterBox: React.FC<LetterBoxProps> = ({ index, letter, disabled, onClick,
     onKeyDown(event);
   };
 
-  console.log(disabled);
-
   return (
-    <Paper key={index} elevation={3} sx={{ p: 2, textAlign: 'center', maxWidth: 60 }} onClick={() => onClick()}> 
+    <Paper 
+      key={index} 
+      elevation={3} 
+      sx={{ 
+        p: 2, 
+        textAlign: 'center', 
+        width: '80px',
+        height: '80px',
+        aspectRatio: '1/1',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 0
+      }} 
+      onClick={() => onClick()}
+    > 
       <TextField
         disabled={disabled}
         key={index}
@@ -44,7 +57,15 @@ const LetterBox: React.FC<LetterBoxProps> = ({ index, letter, disabled, onClick,
         onKeyDown={handleKeyDown}
         onBeforeInput={handleBeforeInput}
         inputRef={inputRef}
-        inputProps={{ maxLength: 1, style: { textAlign: 'center' } }}
+        inputProps={{ maxLength: 1, style: { padding: 1, textAlign: 'center', fontSize: '30px', textTransform: 'uppercase', fontWeight: 'bold' } }}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              border: 'none',
+              padding: 0,
+            },
+          },
+        }}
       />
       {/* <Typography variant="body1">
         {excludedLetters}

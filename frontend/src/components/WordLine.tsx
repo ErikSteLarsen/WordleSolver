@@ -11,33 +11,29 @@ function onLetterClick(string: String) {
 }
 
 interface WordLineProps {
-  lineInfo: LineInfo[];
+  lineInfo: LineInfo;
   onChange: (letterIndex: number, newLetter: string) => void;
   onEnter: (index: number) => void;
 }
 
 const WordLine: React.FC<WordLineProps> = ({ lineInfo, onChange, onEnter }) => {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const [lineDisabled, setLineDisabled] = useState(false);
 
   useEffect(() => {
-    if (inputRefs.current.length !== letters.length) {
-      inputRefs.current = Array(letters.length).fill(null).map((_, i) => inputRefs.current[i] || createRef<HTMLInputElement>().current);
+    if (inputRefs.current.length !== lineInfo.letters.length) {
+      inputRefs.current = Array(lineInfo.letters.length).fill(null).map((_, i) => inputRefs.current[i] || createRef<HTMLInputElement>().current);
     }
     inputRefs.current[0]?.focus();
   }, []);
 
 
-  
-
   const onClick = () => {
-
+    // Implement click, although not in wordle game
   }
 
   const handleLetterChange = (index: number, newLetter: string) => {
     onChange(index, newLetter);
-    if (newLetter && index < letters.length - 1) {
-      console.log()
+    if (newLetter && index < lineInfo.letters.length - 1) {
       inputRefs.current[index + 1]?.focus();
     }
   };
@@ -55,20 +51,19 @@ const WordLine: React.FC<WordLineProps> = ({ lineInfo, onChange, onEnter }) => {
   };
 
     return (
-      <Container maxWidth="xl" sx={{ mt: 5 }}>
+      <Container maxWidth="xl" sx={{ mt: 2 }}>
         <Box
             display="flex"
             justifyContent="center"
-            mt={5}
         >
           <Grid2 container spacing={1.5} direction="row" wrap="nowrap">
-            {letters.map((letter, index) => (
-              <Grid item xs={12 / 7} key={index}>
+            {lineInfo.letters.map((letter, index) => (
+              <Grid item key={index}>
                 <LetterBox
                   key={index}
                   index={index} 
                   letter={letter.letter}
-                  disabled={lineDisabled}
+                  disabled={lineInfo.disabled}
                   onClick={() => onClick}
                   onChange={(index, newLetter) => handleLetterChange(index, newLetter)}
                   onKeyDown={(event) => handleKeyDown(event, index)}
