@@ -1,10 +1,10 @@
 import React from 'react';
-import Start from './components/Start';
+import WordleGame from './components/WordleGame';
 
 const App: React.FC = () => {
   return (
     <div>
-      <Start />
+      <WordleGame />
     </div>
   );
 };

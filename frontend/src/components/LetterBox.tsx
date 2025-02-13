@@ -1,11 +1,12 @@
 // src/components/DayBox.tsx
 import React from 'react';
-import { Paper, TextField, Typography } from '@mui/material';
+import { Paper, TextField } from '@mui/material';
+import { LetterInfo } from '../types';
 
 
 interface LetterBoxProps {
   index: number;
-  letter: string;
+  letterInfo: LetterInfo;
   disabled: boolean;
   onClick: () => void;
   onChange: (index: number, newLetter: string) => void;
@@ -15,7 +16,7 @@ interface LetterBoxProps {
 }
 
 
-const LetterBox: React.FC<LetterBoxProps> = ({ index, letter, disabled, onClick, onChange, onBackspace, onKeyDown, inputRef }) => {
+const LetterBox: React.FC<LetterBoxProps> = ({ index, letterInfo, disabled, onClick, onChange, onBackspace, onKeyDown, inputRef }) => {
   
   const handleBeforeInput = (event: React.FormEvent<HTMLInputElement>) => {
     const input = event.nativeEvent as InputEvent;
@@ -26,11 +27,22 @@ const LetterBox: React.FC<LetterBoxProps> = ({ index, letter, disabled, onClick,
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Backspace' && letter === '')  {
+    if (event.key === 'Backspace' && letterInfo.letter === '')  {
       onBackspace(index);
     }
     onKeyDown(event);
   };
+
+  let backgroundColor = '#FFFFFF';
+  if (disabled) {
+    if (letterInfo.correctPosition) {
+      backgroundColor = '#6AAA64';
+    } else if (letterInfo.correctLetter) {
+      backgroundColor = '#C9B458';
+    } else if (letterInfo.letter !== '') {
+      backgroundColor = '#787C7E';
+    }
+  }
 
   return (
     <Paper 
@@ -45,14 +57,15 @@ const LetterBox: React.FC<LetterBoxProps> = ({ index, letter, disabled, onClick,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 0
+        padding: 0,
+        backgroundColor: backgroundColor
       }} 
       onClick={() => onClick()}
     > 
       <TextField
         disabled={disabled}
         key={index}
-        value={letter}
+        value={letterInfo.letter}
         onChange={(e) => onChange(index, e.target.value)}
         onKeyDown={handleKeyDown}
         onBeforeInput={handleBeforeInput}
@@ -65,11 +78,9 @@ const LetterBox: React.FC<LetterBoxProps> = ({ index, letter, disabled, onClick,
               padding: 0,
             },
           },
+          //caretColor: 'transparent',
         }}
       />
-      {/* <Typography variant="body1">
-        {excludedLetters}
-      </Typography> */}
     </Paper>
   );
 };

@@ -1,0 +1,6 @@
+export const lightBlue = '#D3EAFD'
+export const mediumBlue = '#8DB2D3'
+export const darkerBlue = '#5481A8'
+export const lightBlack = '#2A577E'
+export const mediumBlack = '#0E3353'
+export const darkerBlack = '#001528'

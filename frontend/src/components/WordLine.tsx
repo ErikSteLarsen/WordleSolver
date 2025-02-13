@@ -1,40 +1,36 @@
 import { Box, Container, Grid, Grid2 } from "@mui/material";
 import LetterBox from "./LetterBox";
 import { createRef, useEffect, useRef, useState } from "react";
-import { LetterInfo, LineInfo } from "./Start";
+import { LineInfo } from "../types";
 
-
-
-
-function onLetterClick(string: String) {
-  console.log(string)
-}
 
 interface WordLineProps {
   lineInfo: LineInfo;
-  onChange: (letterIndex: number, newLetter: string) => void;
-  onEnter: (index: number) => void;
+  onEnter: (line: LineInfo) => void;
 }
 
-const WordLine: React.FC<WordLineProps> = ({ lineInfo, onChange, onEnter }) => {
+const WordLine: React.FC<WordLineProps> = ({ lineInfo, onEnter }) => {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [line, setLine] = useState<LineInfo>(lineInfo);
 
   useEffect(() => {
     if (inputRefs.current.length !== lineInfo.letters.length) {
       inputRefs.current = Array(lineInfo.letters.length).fill(null).map((_, i) => inputRefs.current[i] || createRef<HTMLInputElement>().current);
     }
     inputRefs.current[0]?.focus();
-  }, []);
+  }, [lineInfo]);
 
 
-  const onClick = () => {
-    // Implement click, although not in wordle game
-  }
+  const handleLetterChange = (letterIndex: number, newLetter: string) => {
+    setLine(prevLine => {
+      const updatedLetters = prevLine.letters.map((item, j) => 
+        (j === letterIndex ? { ...item, letter: newLetter } : item)
+      );
+      return { ...prevLine, letters: updatedLetters };
+    });
 
-  const handleLetterChange = (index: number, newLetter: string) => {
-    onChange(index, newLetter);
-    if (newLetter && index < lineInfo.letters.length - 1) {
-      inputRefs.current[index + 1]?.focus();
+    if (newLetter && letterIndex < line.letters.length - 1) {
+      inputRefs.current[letterIndex + 1]?.focus();
     }
   };
 
@@ -44,9 +40,9 @@ const WordLine: React.FC<WordLineProps> = ({ lineInfo, onChange, onEnter }) => {
     }
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      onEnter(index);
+      onEnter(line);
     }
   };
 
@@ -57,16 +53,16 @@ const WordLine: React.FC<WordLineProps> = ({ lineInfo, onChange, onEnter }) => {
             justifyContent="center"
         >
           <Grid2 container spacing={1.5} direction="row" wrap="nowrap">
-            {lineInfo.letters.map((letter, index) => (
+          {line.letters.map((letter, index) => (
               <Grid item key={index}>
                 <LetterBox
                   key={index}
                   index={index} 
-                  letter={letter.letter}
-                  disabled={lineInfo.disabled}
-                  onClick={() => onClick}
+                  letterInfo={letter}
+                  disabled={line.disabled}
+                  onClick={() => {}}
                   onChange={(index, newLetter) => handleLetterChange(index, newLetter)}
-                  onKeyDown={(event) => handleKeyDown(event, index)}
+                  onKeyDown={(e) => handleKeyDown(e)}
                   onBackspace={handleBackspace}
                   inputRef={(el) => (inputRefs.current[index] = el)}
                 />
