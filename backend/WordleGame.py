@@ -1,7 +1,6 @@
 import random
 import PercentWordSolver
 import WordProcessor
-import pprint
 
 
 class WordleGameInstance:

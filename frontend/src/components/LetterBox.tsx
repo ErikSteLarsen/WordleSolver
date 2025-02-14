@@ -17,7 +17,7 @@ interface LetterBoxProps {
 
 
 const LetterBox: React.FC<LetterBoxProps> = ({ index, letterInfo, disabled, onClick, onChange, onBackspace, onKeyDown, inputRef }) => {
-  
+
   const handleBeforeInput = (event: React.FormEvent<HTMLInputElement>) => {
     const input = event.nativeEvent as InputEvent;
     const key = input.data;
@@ -27,7 +27,7 @@ const LetterBox: React.FC<LetterBoxProps> = ({ index, letterInfo, disabled, onCl
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Backspace' && letterInfo.letter === '')  {
+    if (event.key === 'Backspace' && letterInfo.letter === '') {
       onBackspace(index);
     }
     onKeyDown(event);
@@ -45,12 +45,12 @@ const LetterBox: React.FC<LetterBoxProps> = ({ index, letterInfo, disabled, onCl
   }
 
   return (
-    <Paper 
-      key={index} 
-      elevation={3} 
-      sx={{ 
-        p: 2, 
-        textAlign: 'center', 
+    <Paper
+      key={index}
+      elevation={3}
+      sx={{
+        p: 2,
+        textAlign: 'center',
         width: '80px',
         height: '80px',
         aspectRatio: '1/1',
@@ -59,9 +59,9 @@ const LetterBox: React.FC<LetterBoxProps> = ({ index, letterInfo, disabled, onCl
         justifyContent: 'center',
         padding: 0,
         backgroundColor: backgroundColor
-      }} 
+      }}
       onClick={() => onClick()}
-    > 
+    >
       <TextField
         disabled={disabled}
         key={index}

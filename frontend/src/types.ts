@@ -17,7 +17,7 @@ export interface CheckSolutionResponse {
     correct_positions: CorrectPosition[];
   }
 
-export type gameEndState = {
+export type GameEndState = {
     gameOver: boolean;
     gameSuccess: boolean;
-}
+} | null

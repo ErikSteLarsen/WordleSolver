@@ -23,7 +23,7 @@ const WordLine: React.FC<WordLineProps> = ({ lineInfo, onEnter }) => {
 
   const handleLetterChange = (letterIndex: number, newLetter: string) => {
     setLine(prevLine => {
-      const updatedLetters = prevLine.letters.map((item, j) => 
+      const updatedLetters = prevLine.letters.map((item, j) =>
         (j === letterIndex ? { ...item, letter: newLetter } : item)
       );
       return { ...prevLine, letters: updatedLetters };
@@ -46,32 +46,32 @@ const WordLine: React.FC<WordLineProps> = ({ lineInfo, onEnter }) => {
     }
   };
 
-    return (
-      <Container maxWidth="xl" sx={{ mt: 2 }}>
-        <Box
-            display="flex"
-            justifyContent="center"
-        >
-          <Grid2 container spacing={1.5} direction="row" wrap="nowrap">
+  return (
+    <Container maxWidth="xl" sx={{ mt: 2 }}>
+      <Box
+        display="flex"
+        justifyContent="center"
+      >
+        <Grid2 container spacing={1.5} direction="row" wrap="nowrap">
           {line.letters.map((letter, index) => (
-              <Grid item key={index}>
-                <LetterBox
-                  key={index}
-                  index={index} 
-                  letterInfo={letter}
-                  disabled={line.disabled}
-                  onClick={() => {}}
-                  onChange={(index, newLetter) => handleLetterChange(index, newLetter)}
-                  onKeyDown={(e) => handleKeyDown(e)}
-                  onBackspace={handleBackspace}
-                  inputRef={(el) => (inputRefs.current[index] = el)}
-                />
-              </Grid>
-            ))}
-          </Grid2>
-        </Box>
-      </Container> 
-    )
+            <Grid item key={index}>
+              <LetterBox
+                key={index}
+                index={index}
+                letterInfo={letter}
+                disabled={line.disabled}
+                onClick={() => { }}
+                onChange={(index, newLetter) => handleLetterChange(index, newLetter)}
+                onKeyDown={(e) => handleKeyDown(e)}
+                onBackspace={handleBackspace}
+                inputRef={(el) => (inputRefs.current[index] = el)}
+              />
+            </Grid>
+          ))}
+        </Grid2>
+      </Box>
+    </Container>
+  )
 }
 
 export default WordLine;
