@@ -29,7 +29,6 @@ const WordleGame: React.FC = () => {
 
 
   useEffect(() => {
-    //console.log("useEffect", endGameResult);
     if (endGameResult?.gameOver) {
       console.log("Lose.");
     } else if (endGameResult?.gameSuccess) {
@@ -42,9 +41,6 @@ const WordleGame: React.FC = () => {
   }, [endGameResult]);
 
   const maxAttempts: number = 6;
-
-
-
 
   const handleCheckSolution = async (lineIndex: number, solution: string): Promise<GameEndState> => {
     const res: CheckSolutionResponse = await checkSolution(solution);

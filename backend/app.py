@@ -15,7 +15,7 @@ game = WordleGameInstance(available_words)
 
 @app.route('/')
 def home():
-    return "<h1>Wordle API</h1>"
+    return "Wordle API"
 
 @app.route('/exclude_letter', methods=['POST'])
 def exclude_letter():
@@ -74,4 +74,4 @@ def reset_game():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
