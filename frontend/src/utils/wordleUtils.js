@@ -16,6 +16,11 @@ export const pickRandomSolutionWord = (words) => {
     return '';
 };
 
+
+export const resetGame = (words) => {
+    return pickRandomSolutionWord(words);
+};
+
 export const checkSolution = (solution, solutionWord) => {
     const correctLetters = [];
     const correctPositions = [];

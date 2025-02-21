@@ -3,14 +3,16 @@ import { Container, Typography, Button, Box } from '@mui/material';
 import TopMenuBar from './menu/TopMenuBar';
 import WordLine from './WordLine';
 import '../style/Start.css';
-import { checkSolution, resetGame } from './service';
 import { CheckSolutionResponse, GameEndState, LetterInfo, LineInfo } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import Title from './Title';
 import { darkerBlue, lightBlack } from '../variables/colors';
+import { checkSolution, resetGame } from '../utils/wordleUtils';
 
 
 const WordleGame: React.FC = () => {
+  const [solution, setSolution] = useState<GameEndState>(null);
+
   const initLine: LetterInfo[] = [
     { letter: '', correctLetter: false, correctPosition: false },
     { letter: '', correctLetter: false, correctPosition: false },
@@ -29,6 +31,7 @@ const WordleGame: React.FC = () => {
 
 
   useEffect(() => {
+    //console.log("useEffect", endGameResult);
     if (endGameResult?.gameOver) {
       console.log("Lose.");
     } else if (endGameResult?.gameSuccess) {
@@ -42,8 +45,12 @@ const WordleGame: React.FC = () => {
 
   const maxAttempts: number = 6;
 
+
+
+
   const handleCheckSolution = async (lineIndex: number, solution: string): Promise<GameEndState> => {
-    const res: CheckSolutionResponse = await checkSolution(solution);
+    //const res: CheckSolutionResponse = await checkSolution(solution); // Backend call
+    const res: CheckSolutionResponse = checkSolution()
     let gameOver = false;
     let gameSuccess = false;
 
@@ -125,8 +132,10 @@ const WordleGame: React.FC = () => {
   }
 
   const handleResetGame = async () => {
-    const res = await resetGame();
-    console.log(res.message);
+    // const res = await resetGame(); // backend call
+    const res = resetGame();
+    setSolution(res);
+    console.log(res);
     setWordLines(initLineInfo);
     setEndGameResult({ gameOver: false, gameSuccess: false })
   }

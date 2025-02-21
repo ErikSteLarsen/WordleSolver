@@ -8,7 +8,7 @@ const TopMenuBar: React.FC = () => {
     <AppBar position="static" sx={{ height: 40 }}>
       <Toolbar variant="dense" sx={{ minHeight: 40, backgroundColor: mediumBlack, color: 'white' }}>
         <Typography variant="h6" component="div">
-          Exercise for your brain
+          Exercise your brain
         </Typography>
       </Toolbar>
     </AppBar>
